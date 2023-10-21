@@ -25,10 +25,10 @@ public class TodoService {
         return todos.stream().filter(todoPredicate).toList();
     }
 
-    public void addNewTodo(String user, String desc,LocalDate targetDate,boolean isDone) {
+    public void addNewTodo(String username, String desc,LocalDate targetDate,boolean isDone) {
         todos.add(new Todo(
                 ++todoCount,
-                user,
+                username,
                 desc,
                 targetDate,
                 isDone));

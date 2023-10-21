@@ -35,14 +35,14 @@ public class TodoController {
 
     @GetMapping("/add-Todo")
     public String showNewTodoPage(ModelMap model) {
-        Todo todo = new Todo(0, (String) model.get("username"), "Default Desc", LocalDate.now(),false);
+        String username = getLoggedInUserName(model);
+        Todo todo = new Todo(0, username, "", LocalDate.now(),false);
         model.put("todo", todo);
         return "addTodo";
     }
 
     @PostMapping("/add-Todo")
     public String addNewTodoPage(ModelMap model, @Valid Todo todo, BindingResult result) {
-        logger.debug(model.get("username").toString());
         if (result.hasErrors()) {
             return "addTodo";
         }
@@ -65,11 +65,12 @@ public class TodoController {
     }
 
     @PostMapping("/update-Todo")
-    public String updateTodo(@RequestParam int id, ModelMap model, @Valid Todo todo, BindingResult result) {
-        logger.debug(model.get("username").toString());
+    public String updateTodo(ModelMap model, @Valid Todo todo, BindingResult result) {
         if (result.hasErrors()) {
             return "addTodo";
         }
+        String username = getLoggedInUserName(model);
+        todo.setUsername(username);
         todoService.updateTodo(todo);
         return "redirect:/list-todos";
     }
